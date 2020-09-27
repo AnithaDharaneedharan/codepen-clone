@@ -21,6 +21,22 @@ body {
   background-color: hsl(225, 6%, 25%);
 }
 
+.editor-container.collapsed {
+  flex-grow: 0 ;
+}
+
+.editor-container.collapsed .CodeMirror-scroll{
+  position: absolute;
+}
+
+.expand-collapse-btn {
+  margin-left: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
 .editor-title{
   display: flex;
   justify-content: space-between;

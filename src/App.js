@@ -1,18 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Editor from "./components/Editor";
+import useLocalStorage from './hooks/useLocalStorage'
 
 function App() {
-  const [html, setHtml] = useState("");
-  const [css, setCss] = useState("");
-  const [js, setJs] = useState("");
+  const [html, setHtml] = useLocalStorage("html", '');
+  const [css, setCss] = useLocalStorage("css", '');
+  const [js, setJs] = useLocalStorage("js", '');
+  const [srcDoc, setSrcDoc] = useLocalStorage("");
 
-  const srcDoc = (
-    <html>
-      <body>${html}</body>
-      <style>${css}</style>
-      <script>${js}</script>
-    </html>
-  );
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setSrcDoc(`
+        <html>
+          <body>${html}</body>
+          <style>${css}</style>
+          <script>${js}</script>
+        </html>
+      `);
+    }, 250);
+
+    return () => clearTimeout(timeout)
+
+  }, [html, css, js]); // even if i remove these , the app still works
 
   return (
     <>
@@ -29,7 +38,12 @@ function App() {
           value={css}
           onChange={setCss}
         />
-        <Editor language="javascript" displayName="JS" value={js} onChange={setJs} />
+        <Editor
+          language="javascript"
+          displayName="JS"
+          value={js}
+          onChange={setJs}
+        />
       </div>
       <div className="pane">
         <iframe
